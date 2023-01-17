@@ -1,40 +1,48 @@
 import React, { useState } from "react";
-import {  Col,Button } from "react-bootstrap";
+import { Col, Button } from "react-bootstrap";
 import UserComponent from "./UserComponent";
 import DetailsComponent from "./DetailsComponent";
 import useFetch from "../hooks/useFetch";
 import RepositoriesComponent from "./RepositoriesComponent";
+import { Link } from "react-router-dom";
 
 
 const UsersContainerComponent = (props) => {
-    const users = useFetch('https://shawandpartners-api-backend.onrender.com/api/users', null);
-    const[showMore, setShowMore] = useState();
+    let [since, setSince] = useState(0);
+    const users = useFetch(`https://shawandpartners-api-backend.onrender.com/api/users?since=${since}`, null);
 
+    const onClickShowMore = () => {
+        setSince(since += 30);
+    }
 
     if (!users) {
         return <>Loading...</>
     }
 
-    const onClickSetShowMore = () =>{
-        
+    const onClickShowLess = () => {
+        if (since !== 0) {
+            setSince(since -= 30)
+        }
     }
 
-    return <><Col md={4} sm={12} className="user-separator">
+    return <><Col>
+
         <div>
             {
-                users.map((user, index) => <UserComponent key={index} login={user.login} id={user.id} />)
+                users.map((user, index) => <div><Link to={`/${user.login}/details`} className="user-link">
+                    <UserComponent key={index} login={user.login} id={user.id} />
+                </Link></div>)
             }
         </div>
-        <Button onClick={onClickSetShowMore}> Show more</Button>
-        
-        <hr />
-        <DetailsComponent login={users[0].login} />
-
-        <hr />
-        <RepositoriesComponent login={users[0].login} />
+        <Button onClick={onClickShowMore}>Show more</Button>
+        {since > 0 ?
+            <Button onClick={onClickShowLess} variant="secondary">Show Less</Button>
+            : ""
+        }
 
     </Col>
     </>
-} 
+
+}
 
 export default UsersContainerComponent;

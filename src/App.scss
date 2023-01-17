@@ -1,2 +1,21 @@
-@import "./components/styles.scss";
-@import "~bootstrap/scss/bootstrap";
+.user-link {
+    text-decoration: none
+}
+
+.user {
+    width: 300px;
+    margin: 10px;
+    cursor: pointer;;
+}
+
+.user:hover {
+    background-color: #eee;
+}
+
+.user .card-title {
+    margin: 10px;
+}
+
+.img-thumbnail {
+    width: 300px !important;
+}

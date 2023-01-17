@@ -1,11 +1,12 @@
 import useFetch from "../hooks/useFetch"
 import { Table } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
 
 const RepositoriesComponent = ({ login }) => {
     const repos = useFetch(`https://shawandpartners-api-backend.onrender.com/api/users/${login}/repos`, null);
 
     if (!repos) {
-        return <>Loading...</>
+        return <><Spinner animation="grow" variant="primary" /> Loading repositories...</>
     }
 
     return <>
